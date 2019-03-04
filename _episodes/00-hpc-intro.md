@@ -33,7 +33,7 @@ Working with HPC systems involves the use of a \"UNIX shell\" through a **comman
 
 Although users can work interactively with HPC systems, it is more common (and better practice) to perform most tasks via submitting \"jobs\". A job consists of commands which request HPC resources and specify a task to be completed. Jobs are prioritised and placed in a queue by a \"job scheduler\" before being executed.
 
-### Why use an HPC?
+### Why use a HPC?
 
 HPC systems are designed specifically to assist researchers with analytically demanding tasks. Users can perform many small tasks simultaneously, such as projecting a single model onto datasets from different years. This is an example of "serial programming", where each task is entirely independent from the others. Alternatively, with the assistance of Message Passing Interfaces (**MPI's**), users can combine multiple CPU resources to perform a single task more efficiently. This is an example of "parallel programming", where each CPU is working on a portion of single task, before results are assembled in the correct order by an MPI. The benefits of using HPC systems for research often far outweigh the cost of learning to use a Shell and include:
 
@@ -89,4 +89,3 @@ Nelle needs to accomplish tasks such as the following:
 Suppose that each file takes about a minute to analyze on her desktop system and consuming all of the resources available, so no email or any other work while the program is running.  With 10,000 files in all this means that it will take approximately 166 hours, or just under 7 days to completely process all the files. 
 
 Shifting this work to an HPC system will not only stand to speed up the processig of these files but the processing will importantly allow Nelle to continue to use her own computer for other work.
-
