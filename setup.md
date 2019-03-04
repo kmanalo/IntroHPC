@@ -45,5 +45,8 @@ Filezilla is still a useful tool, but today's file transfers will not require it
 [FileZilla](https://filezilla-project.org/) is a Graphical Program used to transfer files between your computer and a remote HPC setup.
 Filezilla can be used on Windows, OSx, and Linux.
 
+## Globus
 
+Please see our resources on connecting to Globus and Transferring Data to MARCC Using Our Data Transfer Nodes:
+[MARCC - Transfer Data With Globus](https://www.marcc.jhu.edu/transfer-data-globus/)
 
