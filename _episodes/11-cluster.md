@@ -15,15 +15,16 @@ keypoints:
 - "Files saved on one node are available everywhere."
 ---
 
-The words "cloud", "cluster", and "high-performance computing" get thrown around a lot.
-So what do they mean exactly?
-And more importantly, how do we use them for our work?
+The words "cloud", "cluster", and "high-performance computing" get thrown
+around a lot.  So what do they mean exactly?  And more importantly, how do we
+use them for our work?
 
-The "cloud" is a generic term commonly used to refer to remote computing resources.
-Cloud can refer to webservers, remote storage, API endpoints, and as well as more traditional "raw compute" resources. 
-A cluster on the other hand, is a term used to describe a network of compters.
-Machines in a cluster typically share a common purpose, 
-and are used to accomplish tasks that might otherwise be too substantial for any one machine. 
+The "cloud" is a generic term commonly used to refer to remote computing
+resources.  Cloud can refer to webservers, remote storage, API endpoints, and
+as well as more traditional "raw compute" resources.  A cluster on the other
+hand, is a term used to describe a network of compters.  Machines in a cluster
+typically share a common purpose, and are used to accomplish tasks that might
+otherwise be too substantial for any one machine. 
 
 ![The cloud is made of Linux](../files/linux-cloud.jpg)
 
@@ -44,81 +45,73 @@ Here are a couple of use cases where high-performance computing becomes extremel
 * Your compute jobs require specialized GPU or FPGA hardware.
 * Maybe your jobs just take a long time to run.
 
-Chances are, you've run into one of these situations before.
-Fortunately, high-performance computing installations exist to solve these types of problems.
-
-
-## Logging onto the cluster
-
-You should be logged into OnDemand, we will open a terminal window from the Dashboard. Use the Clusters pulldown menu
-and choose "Owens Shell Access".
+Chances are, you've run into one of these situations before.  Fortunately,
+high-performance computing installations exist to solve these types of
+problems.
 
 ## Where are we? 
 
-Very often, many users are tempted to think of a high-performance computing installation as one giant, magical machine.
-Sometimes, people even assume that the machine they've logged onto is the entire computing cluster.
 So what's really happening? What machine have we logged on to?
 The name of the current computer we are logged onto can be checked with the `hostname` command.
 
+MARCC presents a single view of multiple filesystem targets, and users log into a round-robin set of login nodes.  
+Users use the login nodes typically to compile codes, transfer files, and access the scheduler to submit jobs to compute nodes.
 
 ```
 hostname
 ```
 {: .bash}
 ```
-owens-login04.hpc.osc.edu
+bc-login01
 ```
 {: .output}
 
-Clusters have different types of machines customized for different types of tasks.
-In this case, we are on a login node.
-A login node serves as a gateway to the cluster and serves as a single point of access.
-As a gateway, it is well suited for uploading and downloading files, setting up software, and running quick tests.
-It should never be used for doing actual work.
+Clusters have different types of machines customized for different types of
+tasks.  In this case, we are on a login node.  A login node serves as a gateway
+to the cluster and serves as a single point of access.  As a gateway, it is
+well suited for uploading and downloading files, setting up software, and
+running quick tests.  It should never be used for doing actual work.
 
 The real work on a cluster gets done by the compute nodes.
 Compute nodes come in many shapes and sizes, but generally are dedicated to doing all of the heavy lifting that needs doing. 
-All interaction with the compute nodes is handled by a specialized piece of software called a scheduler. We use the Moab scheduler.
-We can view all of the worker nodes with the `pbsnodes -a` command. But this would be overwhelming since we have over 800 compute nodes, so we'll abbreviate it instead.
+All interaction with the compute nodes is handled by a specialized piece of software called a scheduler. We use the SLURM scheduler.
+We can view all of the worker nodes with the `pbsnodes -a` command. But this would be overwhelming since we have over 900 compute nodes, so we'll abbreviate it instead.
 
 ```
-pbsnodes -a | tail -n 50
+scontrol show nodes | tail -n 18
 ```
 {: .bash}
 ```
-o0464
-     state = job-exclusive
-     power_state = Running
-     np = 28
-     properties = broadwell-ep,c6320,ib-i1l1s18,ib-i1,eth-owens-rack07h1,owens-rack07-c08,owens-rack07,owens,pfsdir,ime
-     ntype = cluster
-     jobs = 0-27/3816217.owens-batch.ten.osc.edu
-     status = opsys=linux,uname=Linux o0464.ten.osc.edu 3.10.0-693.37.4.el7.x86_64 #1 SMP Fri Aug 10 12:34:55 EDT 2018 x86_64,sessions=2618 147256,nsessions=2,nusers=2,idletime=44307,totmem=182247896kb
-,availmem=167945740kb,physmem=131916252kb,ncpus=28,loadave=23.14,gres=,netload=1368471174094,size=899955648kb:909207804kb,state=free,varattr= ,cpuclock=Fixed,macaddr=7c:d3:0a:b1:66:ea,version=6.1.2,rec
-time=1537282339,jobs=3816217.owens-batch.ten.osc.edu
-     mom_service_port = 15002
-     mom_manager_port = 15003
-     total_sockets = 2
-     total_numa_nodes = 2
-     total_cores = 28
-     total_threads = 28
-     dedicated_sockets = 0
-     dedicated_numa_nodes = 0
-     dedicated_cores = 0
-     dedicated_threads = 28
 
+NodeName=gpudev002 Arch=x86_64 CoresPerSocket=12
+   CPUAlloc=2 CPUErr=0 CPUTot=24 CPULoad=1.55
+   AvailableFeatures=skylake,v100
+   ActiveFeatures=skylake,v100
+   Gres=gpu:2
+   NodeAddr=gpudev002 NodeHostName=gpudev002 Version=17.11
+   OS=Linux 3.10.0-862.9.1.el7.x86_64 #1 SMP Mon Jul 16 16:29:36 UTC 2018
+   RealMemory=95307 AllocMem=7100 FreeMem=82349 Sockets=2 Boards=1
+   State=MIXED ThreadsPerCore=1 TmpDisk=0 Weight=2040 Owner=N/A MCS_label=N/A
+   Partitions=gpuv100
+   BootTime=2019-02-05T12:27:50 SlurmdStartTime=2019-02-06T08:49:33
+   CfgTRES=cpu=24,mem=95307M,billing=24,gres/gpu=2
+   AllocTRES=cpu=2,mem=7100M,gres/gpu=2
+   CapWatts=n/a
+   CurrentWatts=0 LowestJoules=0 ConsumedJoules=0
+   ExtSensorsJoules=n/s ExtSensorsWatts=0 ExtSensorsTemp=n/s
 
 ```
 {: .output}
 
-There are also specialized machines used for managing disk storage, user authentication, 
-and other infrastructure-related tasks. 
+There are also specialized machines used for managing disk storage, user
+authentication, and other infrastructure-related tasks. 
 Although we do not interact with these directly, 
-but these enable a number of key features like ensuring our user account and files are available throughout the cluster.
-This is an important point to remember: 
-files saved on one node (computer) are available everywhere on the cluster!
+but these enable a number of key features like ensuring our user account and
+files are available throughout the cluster.  This is an important point to
+remember: files saved on one node (computer) are available everywhere on the
+cluster!
 
 ![Structure of Cluster](../files/cluster_login.jpg)
 
-This graphic is a general view of the parts of a cluster. For specific details on the clusters at OSC, check out our 
-Cluster Computing webpage: [https://www.osc.edu/services/cluster_computing](https://www.osc.edu/services/cluster_computing)
+This graphic is a general view of the parts of a cluster. For specific details on the clusters at MARCC, check out our 
+Cluster System Details: [https://www.marcc.jhu.edu/cyberinfrastructure/hardware/](https://www.marcc.jhu.edu/cyberinfrastructure/hardware/)
