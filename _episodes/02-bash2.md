@@ -89,7 +89,7 @@ $ whoami
 {: .bash}
 
 ~~~
-kcahill
+kmanalo
 ~~~
 {: .output}
 
@@ -469,10 +469,10 @@ It is often necessary to move data from your local computer to the remote system
 ### `scp` from your local computer to the remote system
 The most basic command line tool for moving files around is secure copy or `scp`.
 
-`scp` behaves similarily to `ssh` but with one additional input, the name of the file to be copied.  If we were in the shell on our local computer, the file we wanted to move was in our current directory, named "globus.tgz", and Nelle wanted to move it to her home directory on OSC then the command would be
+`scp` behaves similarily to `ssh` but with one additional input, the name of the file to be copied.  If we were in the shell on our local computer, the file we wanted to move was in our current directory, named "globus.tgz", and Nelle wanted to move it to her home directory on MARCC then the command would be
 	
 ~~~
-[local]$ scp fileToMove nelle@owens.osc.edu:
+[local]$ scp fileToMove nelle@login.marcc.jhu.edu:~
 ~~~
 {: .bash}
 	
@@ -491,14 +491,6 @@ fileToMove
 ...
 ~~~
 {: .output}
-
-## File transfer using OnDemand
-
-The file manager application in OnDemand allows you to manage your files in a graphical format. You can copy, move, edit, 
-and transfer files easily. You can also navigate your filesystem by using your mouse. The path will always be displayed 
-at the top of the window. The file transfer tool is especially easy to use for transfering files from your computer to the 
-cluster by dragging and dropping or using the upload and download buttons.
-
 
 ## Grabbing files from the internet
 

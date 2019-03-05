@@ -8,7 +8,7 @@ objectives:
 - "Be able to connect to a remote HPC system"
 
 keypoints:
-- "We connect to remote servers sing the Terminal"
+- "We connect to remote servers using the terminal"
 - "SSH is a secure protocol for connecting to remote servers"
 - "To connect to a server, you need it's address, an open port (usually 22 for ssh), and your user ID"
 ---
@@ -77,10 +77,10 @@ username@login.marcc.osc.edu's password:
 If you entered your password appropriately, congratulations, you're now connected.  
 
 > ## The Command Prompt
-> The command prompt is the symbol or series of characters which precedes each shell command, and lets the user know the shell is ready to receive commands.  For example, when you initially login to the HPC you command prompt should resemble `-bash-4.1`. If your command prompt changes to `>`, the shell is expecting further input. Use the key-binding CTRL+C to escape shell commands, returning your prompt from `>` to `-bash-4.1`.  
+> The command prompt is the symbol or series of characters which precedes each shell command, and lets the user know the shell is ready to receive commands.  For example, when you initially login to the HPC you command prompt should resemble `-bash-4.2`. If your command prompt changes to `>`, the shell is expecting further input. Use the key-binding CTRL+C to escape shell commands, returning your prompt from `>` to `-bash-4.2`.  
 >
 > Let's all change our command prompts to something more useful, input the command `PS1='\W\n $ '`. Our command prompt is now our current working directory followed by a \"$\".
+>
+> On MARCC systems, the PS1 is predefined: `[kmanalo@bc-login01 ~]$ echo $PS1 `
+> `[\u@\h \W]\$`. This just means that `[username@hostname current-working-directory]` is the default prompt.
 {: .callout}
-
-On MARCC systems, the PS1 is predefined: `[kmanalo@bc-login01 ~]$ echo $PS1
-`[\u@\h \W]\$`. This just means that `[username@hostname current-working-directory]` is the default information.

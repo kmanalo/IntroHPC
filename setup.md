@@ -19,8 +19,7 @@ You will find the example [files used in this tutorial here.](https://github.com
 
 ## Connecting to cluster
 
-You can download an SSH client below if you wish, but we will do all of today's activities using our web portal, OnDemand 
-[https://ondemand.osc.edu](https://ondemand.osc.edu).
+There are a variety of SSH clients for access to MARCC Blue Crab.
 
 **Windows**
 
