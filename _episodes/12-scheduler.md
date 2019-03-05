@@ -218,22 +218,17 @@ scavenger     up    6:00:00    617/40/94/751  bigmem[0001-0050],compute[0001-067
 
 ## Job environment variables
 
-PBS sets multiple environment variables at submission time. The following PBS variables are commonly used in command files: 
+Slurm sets multiple environment variables at submission time. The following Slurm variables are commonly used in command files: 
 
-
-| Variable Name |  Description |
-|---|---|
-| PBS_ARRAYID|  Array ID numbers for jobs submitted with the -t flag. For example a job submitted with #PBS -t 1-8 will run eight identical copies of the shell script. The value of the PBS_ARRAYID will be an integer between 1 and 8.|
-| PBS_ENVIRONMENT|  Set to PBS_BATCH to indicate that the job is a batch job; otherwise, set to PBS_INTERACTIVE to indicate that the job is a PBS interactive job.|
-| PBS_JOBID|  Full jobid assigned to this job. Often used to uniquely name output files for this job, for example: mpirun - np 16 ./a.out >output.${PBS_JOBID}|
-| PBS_JOBNAME|  Name of the job. This can be set using the -N option in the PBS script (or from the command line). The default job name is the name of the PBS script.|
-| PBS_NODEFILE|  Contains a list of the nodes assigned to the job. If multiple CPUs on a node have been assigned, the node will be listed in the file more than once. By default, mpirun assigns jobs to nodes in the order they are listed in this file |
-| PBS_O_HOME|  The value of the HOME variable in the environment in which qsub was executed.|
-| PBS_O_HOST|  The name of the host upon which the qsub command is running.|
-| PBS_O_PATH|  Original PBS path. Used with pbsdsh.|
-| PBS_O_QUEUE|  Queue job was submitted to.|
-| PBS_O_WORKDIR|  PBS sets the environment variable PBS_O_WORKDIR to the directory from which the batch job was submitted PBS_QUEUE Queue job is running in (typically this is the same as PBS_O_QUEUE). |
-| $TEMPDIR|  Compute node where job is assigned.|
+| Variable Name          |  Description |
+|---                     |---|
+| SLURM_ARRAY_TASK_ID    |  Array ID numbers for jobs submitted with the --array flag. For example a job submitted with #SBATCH --array 1-8 will run eight identical copies of the shell script. The value of the SLURM_ARRAY_TASK_ID will be an integer between 1 and 8.|
+| SLURM_JOB_ID           |  Full jobid assigned to this job. Often used to uniquely name output files for this job, for example: mpiexec -n 16 ./a.out >output.${SLURM_JOB_ID}|
+| SLURM_JOB_NAME         |  Name of the job. This can be set using the -N option in the PBS script (or from the command line). The default job name is the name of the script.|
+| SLURM_NODELIST         |  Contains a list of the nodes assigned to the job. If multiple CPUs on a node have been assigned, the node will be listed in the file more than once. By default, mpirun assigns jobs to nodes in the order they are listed in this file |
+| SLURM_SUBMIT_HOST      |  The name of the host upon which the qsub command is running.|
+| SLURM_JOB_PARTITION    |  Partition job was submitted to.|
+| SLURM_SUBMIT_DIR       |  Slurm sets the environment variable to the directory from which the batch job was submitted 
 
 > ## Quick Reference
 >A good reference for these and other Slurm variables is part of our [Queueing System (Slurm) - MARCC](https://www.marcc.jhu.edu/getting-started/running-jobs/).
@@ -241,10 +236,9 @@ PBS sets multiple environment variables at submission time. The following PBS va
 
 ## Canceling a job
 
-
-Sometimes we'll make a mistake and need to cancel a job.
-This can be done with the `qdel` command.
-Let's submit a job and then cancel it using its job number.
+Sometimes we'll make a mistake and need to cancel a job.  This can be done with
+the `scancel` command.  Let's submit a job and then cancel it using its job
+number.
 
 ```
 ~> sbatch test.job
@@ -256,8 +250,8 @@ Mon Mar  4 13:30:27 2019
 
 ```
 
-Now cancel the job with it's job number. 
-Absence of any job info indicates that the job has been successfully canceled.
+Now cancel the job with it's job number.  Absence of any job info indicates
+that the job has been successfully canceled.
 
 ```
 > scancel 32962473
