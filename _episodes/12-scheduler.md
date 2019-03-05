@@ -16,36 +16,34 @@ keypoints:
 - "If in doubt, request more resources than you will need."
 ---
 
-An HPC system might have thousands of nodes and thousands of users.
-How do we decide who gets what and when?
-How do we ensure that a task is run with the resources it needs?
-This job is handled by a special piece of software called the scheduler.
-On an HPC system, the scheduler manages which jobs run where and when.
+An HPC system might have thousands of nodes and thousands of users.  How do we
+decide who gets what and when?  How do we ensure that a task is run with the
+resources it needs?  This job is handled by a special piece of software called
+the scheduler.  On an HPC system, the scheduler manages which jobs run where
+and when.
 
-The scheduler used in this lesson is PBS Pro (PBS for short).
-Although PBS is not used everywhere, 
-running jobs is quite similar regardless of what software is being used.
-The exact syntax might change, but the concepts remain the same.
+The scheduler used in this lesson is Slurm.  Although Slurm is not used
+everywhere, running jobs is quite similar regardless of what software is being
+used.  The exact syntax might change, but the concepts remain the same.
 
 ## Running a batch job
 
 The most basic use of the scheduler is to run a command non-interactively.
 This is also referred to as batch job submission.
-In this case, we need to make a script that incorporates some arguments for PBS such as resources needed and modules to load. We will use the script below and name it test.pbs. Please copy the script text below and put it into a file using the
-file explorer on OnDemand. Create this file in your `test_jobs directory`. 
-   * Remember to update the project code line: `#PBS -A PZSXXX` with your own project number.
+In this case, we need to make a script that incorporates some arguments for SLURM such as resources needed and modules to load. 
+
+Create a file in a `test_jobs directory`. 
 
 ```
-test.pbs
+test.job
 ```
 ```
-#!/bin/bash
-#PBS -q debug
-#PBS -A PZSXXXX
-  #Give the job a name 
-#PBS -N test_script
-#PBS -l walltime=00:03:00
-#PBS -l nodes=1:ppn=2
+#!/bin/bash -l
+#SBATCH --partition=quickdebug
+#SBATCH --job-name=test_job
+#SBATCH --time=00:10:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
 
 echo 'This script is running on:'
 hostname
@@ -53,76 +51,68 @@ echo 'The date is :'
 date
 sleep 120
 ```
-We will talk about the parameters set above and their defaults later in this lesson.
+We will talk about the parameters set above and their defaults later in this
+lesson.
 
-As this is just a bash script, you can run it as any bash script on the head node. Please note- its very very important not to run any large or resource heavy script on the head node, as every user relies on this head node.
+As this is just a bash script, you can run it as any bash script on the head
+node. Please note- its very very important not to run any large or resource
+heavy script on the head node, as every user relies on this head node.
 
-To test a small pbs script, run it as:
+To test a small SLURM script, run it as:
 ```
-~> ./test.pbs
+bash test.pbs
+# alternatively you can 
+# chmod +x test.pbs
+# ./test.job
 This script is running on:
-owens-login04.hpc.osc.edu
+bc-login01
 The date is :
-Tue Sep 18 14:21:02 EDT 2018
+Mon Mar  4 12:23:40 EST 2019
 ```
 This script will take 2 minutes to finish due to the `sleep 120` command.
 
-If you get a Permissions denied error, you will need to give your script executable permissions as per the last lesson.
+There is a distinction between running the job through the scheduler and just
+"running it".  To submit this job to the scheduler, we use the `sbatch`
+command.
 
 ```
-~> chmod +x test.pbs
+sbatch test.job
+Submitted batch job 32962120
 ```
 
-If you completed the previous challenge successfully, 
-you probably realize that there is a distinction between 
-running the job through the scheduler and just "running it".
-To submit this job to the scheduler, we use the `qsub` command.
-
-```
-~> qsub test.pbs
-3818006.owens-batch.ten.osc.edu
-~>
-```
 The number that first appears is your Job ID. When the job is completed, you will get two files: an Output and an Error file (even if there is no errors). They will be named {JobName}.o{JobID} and {JobName}.e{JobID} respectively.
 
 And that's all we need to do to submit a job. 
-To check on our job's status, we use the command `qstat`.
+To check on our job's status, we use the command `squeue`.
 
 ```
-~> qstat -u username
-owens-batch.ten.osc.edu: 
-                                                                                  Req'd       Req'd       Elap
-Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory      Time    S   Time
------------------------ ----------- -------- ---------------- ------ ----- ------ --------- --------- - ---------
-3818006.owens-batch.te  kcahill     debug    test_script         --      1      2       8gb  00:03:00 Q       --   
+~> squeue -u $USER # this usually is set to your username
+Mon Mar  4 23:06:27 2019
+              USER    JOBID PARTITION      NAME NODES  CPUS PRIORITY TIME_LIMIT     TIME        NODELIST ST REASON
+           kmanalo 32962305 quickdebug test_job     1     1    11290      10:00     0:00     compute0678 R None
 ```
 
 {: .output}
 
-We can see all the details of our job, most importantly if it is in the "R" or "RUNNING" state.
-Sometimes our jobs might need to wait in a queue ("QUEUED") or have an error.
-The best way to check our job's status is with `qstat`. It is easiest to view just your own jobs
-in the queue with the `qstat -u username`. Otherwise, you get the entire queue.
-
-Also, OnDemand allows you to view the queue for all systems (not just the one you are on in the shell) under Jobs, select
-Active Jobs. You can filter by your jobs, your group's jobs, and all jobs.
-
-## Customizing your job
+We can see all the details of our job, most importantly if it is in the "R" or
+running state.  Sometimes our jobs might need to wait in a queue ("PD") or have
+an error.  The best way to check our job's status is with `squeue`. It is
+easiest to view just your own jobs in the queue with the `squeue -u username`
+or using the MARCC alias `sqme`.  Otherwise, you get the entire queue.
 
 ### Parameters
 
-Let's discuss the example PBS script.
+Let's discuss the example SLURM script.
 ```
-test.pbs
+test.job
 ```
 ```
-#!/bin/bash
-#PBS -q debug
-#PBS -A PZSXXXX
-   #Give the job a name 
-#PBS -N test_script
-#PBS -l walltime=00:03:00
-#PBS -l nodes=1:ppn=2
+#!/bin/bash -l
+#SBATCH --partition=quickdebug
+#SBATCH --job-name=test_job
+#SBATCH --time=00:10:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
 
 echo 'This script is running on:'
 hostname
@@ -131,116 +121,91 @@ date
 sleep 120
 ```
 
-Comments in UNIX (denoted by `#`) are typically ignored.
-But there are exceptions.
-For instance the special `#!` comment at the beginning of scripts
-specifies what program should be used to run it (typically `/bin/bash`).
-Schedulers like PBS also have a special comment used to denote special 
-scheduler-specific options.
-Though these comments differ from scheduler to scheduler, 
-PBS's special comment is `#PBS`.
-Anything following the `#PBS` comment is interpreted as an instruction to the scheduler.
+Comments in UNIX (denoted by `#`) are typically ignored.  But there are
+exceptions.  For instance the special `#!` comment at the beginning of scripts
+specifies what program should be used to run it (typically `/bin/bash`).  The
+option '-l' means behave as if logging in Schedulers like Slurm also have a
+special comment used to denote special scheduler-specific options.  Though
+these comments differ from scheduler to scheduler, Slurm's special comment is
+`#SBATCH`.  Anything following the `#SBATCH` comment is interpreted as an
+instruction to the scheduler.
 
 In our example, we have set the following parameters:
  
 | Flag | Name | Example Setting | Notes|
 | --- | --- | --- | --- |
-| -q | queue | debug | See next section for queue info |
-| -A | project |PZS| You must specify a project for each job |
-| -N | jobname| test_script | Name of your script (no spaces, alphanumeric only) |
-| -l | resource list| multiple settings| See next segment|
+| --partition | queue | quickdebug | See next section for queue info |
+| --job-name | jobname| test_job | Name of your script (no spaces, alphanumeric only) |
+| --nodes | number of nodes | 1 | |
+| --ntasks | number of tasks | 4 | MPI tasks or CPU cores |
 
 ### Resource list
 Resource list will contain a number of settings that informs the PBS scheduler what resources to allocate for your job and for how long (walltime).
 
 #### Walltime
-Walltime is represented by `walltime=00:01:01` in the format HH:MM:SS. This will be how long the job will run before timing out.  If your job exceeds this time the scheduler will terminate the job. It is recommended to find a usual runtime for the job and add some more (say 20%) to it. For example, if a job took approximately 10 hours, the walltime limit could be set to 12 hours, e.g. "-l walltime=12:00:00". By setting the walltime the scheduler can perform job scheduling more efficiently and also reduces occasions where errors can leave the job stalled but still taking up resource for the default much longer walltime limit (for queue walltime defaults run "qstat -q" command)
+Walltime is represented by `time=00:01:01` in the format HH:MM:SS. This will be how long the job will run before timing out.  If your job exceeds this time the scheduler will terminate the job. It is recommended to find a usual runtime for the job and add some more (say 20%) to it. For example, if a job took approximately 10 hours, the walltime limit could be set to 12 hours, e.g. "-l walltime=12:00:00". By setting the walltime the scheduler can perform job scheduling more efficiently and also reduces occasions where errors can leave the job stalled but still taking up resource for the default much longer walltime limit (for queue walltime defaults run "qstat -q" command)
 
-Resource requests are typically binding.
-If you exceed them, your job will be killed.
-Let's use walltime as an example.
-We will request 30 seconds of walltime, 
-and attempt to run a job for two minutes.
+Resource requests are typically binding.  If you exceed them, your job will be
+killed.  Let's use walltime as an example.  We will request 60 seconds of
+walltime, and attempt to run a job for two minutes.
 
 ```
-#!/bin/bash
-
-#PBS -A PZSXXXX
-#PBS -l walltime=00:00:30  ## <- altered to 30 seconds
-#PBS -l nodes=1:ppn=2
+#!/bin/bash -l
+#SBATCH --partition=quickdebug
+#SBATCH --job-name=test_job
+#SBATCH --time=00:00:60  ## <- altered to 60 seconds
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
 
 echo 'This script is running on:'
 hostname
 echo 'The date is :'
 date
 sleep 120
-
 ```
 
-Submit the job and wait for it to finish. 
-Once it is has finished, check the error log file. In the error file, there will be
+Submit the job and wait for it to finish.  Once it is has finished, check the
+slurm-jobid.out file. In the log file, there will be
 ```
-=>> PBS: job killed: walltime 77 exceeded limit 30
-
+slurmstepd: error: *** JOB 32962322 ON compute0678 CANCELLED AT 2019-03-04T23:18:42 DUE TO TIME LIMIT ***
 ```
 
 Our job was killed for exceeding the amount of resources it requested.
-Although this appears harsh, this is actually a feature.
-Strict adherence to resource requests allows the scheduler to find the best possible place
-for your jobs.
-Even more importantly, 
-it ensures that another user cannot use more resources than they've been given.
-If another user messes up and accidentally attempts to use all of the CPUs or memory on a node, 
-PBS will either restrain their job to the requested resources or kill the job outright.
-Other jobs on the node will be unaffected.
-This means that one user cannot mess up the experience of others,
-the only jobs affected by a mistake in scheduling will be their own.
+Although this appears harsh, this is actually a feature.  Strict adherence to
+resource requests allows the scheduler to find the best possible placement for
+jobs.  Even more importantly, it ensures that another user cannot use more
+resources than specified.  
 
-#### Compute Resources and Parameters
-Compute parameters, represented by `nodes=1:ppn=2` can be considered individually. The argument `nodes` specifies the number of nodes (or chunks of resource) required; `ppn` indicates the number of CPUs per chunk required.
-
-
-| nodes |  ppn |  Description|
-|---|---|---|
-| 2|  16|  32 Processor job, using 2 nodes and 16 processors per node| 
-| 4|  8|  32 Processor job, using 4 nodes and 8 processors per node| 
-| 16|  1|  16 Processor job, using 16 nodes and 1 processor per node| 
-| 8 | 16 | 128 Processor job, using 8 nodes and 16 processors per node|
-
-
-
-Each of these parameters have a default setting they will revert to if not set however this means your script may act differently to what you expect.
-
-You can find out more information about these parameters by viewing the manual page of the `qsub` function. This will also show you what the default settings are.
+You can find out more information about these parameters by viewing the manual
+page of the `sbatch` function. 
 
 ```
-man qsub
+man sbatch
 ```
 
+## Partitions or Queues
 
-## Queues
-
-There are usually a number of available queues to use on your HPC. Remember: Each cluster has separate queues. Right now, we 
-are looking only at the queues on Owens. The other clusters have similar queues but they are not the same. 
-To see what queues are available, you can use the command `qstat -Q`. You do not have to specify a queue for most jobs. 
-Your job will be routed to the appropriate queue based on node and walltime request.
+There are usually a number of available queues to use on your HPC. Remember:
+Each cluster has separate queues. Right now, we are looking only at the queues
+on MARCC Blue Crab. The other clusters have similar queues but they are not the same.  To
+see what queues are available, you can use the command `sinfo -s`.  It is
+important to specify the appropriate partition to make the most econonmical use
+of your allocation and to prevent underutilization of resources.
 
 ```
-~> qstat -Q
-Queue              Max    Tot   Ena   Str   Que   Run   Hld   Wat   Trn   Ext T   Cpt
-----------------   ---   ----    --    --   ---   ---   ---   ---   ---   --- -   ---
-batch                0    179   yes   yes   179     0     0     0     0     0 R     0
-debug                0      2   yes   yes     0     0     0     0     0     0 E     2
-dedicated            0      0   yes   yes     0     0     0     0     0     0 E     0
-hugemem              0     12   yes   yes     0    12     0     0     0     0 E     0
-largeparallel        0     47   yes   yes    39     8     0     0     0     0 E     0
-longserial           0    255   yes   yes     0   255     0     0     0     0 E     0
-montecarlo           0      0   yes   yes     0     0     0     0     0     0 E     0
-newsyntax            0      0   yes   yes     0     0     0     0     0     0 E     0
-parallel             0    115   yes   yes    14    81    19     0     0     0 E     1
-parhugemem           0      3   yes   yes     2     1     0     0     0     0 E     0
-serial               0    900   yes   yes    55   764    56     0     0     0 E    25
-longparallel         0      0   yes   yes     0     0     0     0     0     0 E     0
+~> sinfo -s 
+sinfo -s
+PARTITION  AVAIL  TIMELIMIT   NODES(A/I/O/T)  NODELIST
+shared*       up 3-00:00:00     227/0/20/247  compute[0001-0232,0742-0756]
+parallel      up 3-00:00:00    401/42/54/497  compute[0233-0666,0679-0741]
+gpuk80        up 2-00:00:00        49/9/9/67  gpu[006-072]
+gpup100       up 2-00:00:00          4/0/1/5  gpu[073-077]
+gpuv100       up 2-00:00:00          1/0/1/2  gpudev[001-002]
+lrgmem        up 3-00:00:00       24/1/20/45  bigmem[0006-0050]
+debug         up    2:00:00          1/6/1/8  compute[0672-0676],gpu[001-003]
+quickdebug    up    2:00:00          0/2/0/2  compute[0677-0678]
+unlimited     up   infinite         9/0/3/12  bigmem[0001-0005],compute[0667-0671],gpu[004-005]
+scavenger     up    6:00:00    617/40/94/751  bigmem[0001-0050],compute[0001-0671,0679-0684,0721-0744]
 ```
 {: .bash}
 
@@ -271,7 +236,7 @@ PBS sets multiple environment variables at submission time. The following PBS va
 | $TEMPDIR|  Compute node where job is assigned.|
 
 > ## Quick Reference
->A good reference for these and other PBS variables is part of our [Batch Processing at OSC](https://www.osc.edu/supercomputing/batch-processing-at-osc) pages under [Batch-Related Command Summary](https://www.osc.edu/supercomputing/batch-processing-at-osc/batch-related-command-summary).
+>A good reference for these and other Slurm variables is part of our [Queueing System (Slurm) - MARCC](https://www.marcc.jhu.edu/getting-started/running-jobs/).
 {: .callout}
 
 ## Canceling a job
@@ -282,14 +247,12 @@ This can be done with the `qdel` command.
 Let's submit a job and then cancel it using its job number.
 
 ```
-> qsub test2.pbs
-3818018.owens-batch.ten.osc.edu
+~> sbatch test.job
 
-> qstat -u kcahill
-                                                                                 Req'd       Req'd       Elap
-Job ID                  Username    Queue    Jobname          SessID  NDS   TSK   Memory      Time    S   Time
------------------------ ----------- -------- ---------------- ------ ----- ------ --------- --------- - ---------
-3818018.owens-batch.te  kcahill     debug    test_script         --      1      2       8gb  00:03:00 Q       --          
+~> sqme
+Mon Mar  4 13:30:27 2019
+              USER    JOBID PARTITION      NAME NODES  CPUS PRIORITY TIME_LIMIT     TIME        NODELIST ST REASON
+           kmanalo 32962473 quickdebug test_job     1     1    11290       1:00     0:00     compute0678 R None
 
 ```
 
@@ -297,37 +260,18 @@ Now cancel the job with it's job number.
 Absence of any job info indicates that the job has been successfully canceled.
 
 ```
-> qdel 3818018
-> qstat -u kcahill
+> scancel 32962473
+> sqme
 >
 ```
-## Submit Jobs with job composer on OnDemand
-
-OnDemand also has a tool for job creation and submission to the batch system. The same information as above applies since
-it still uses the same underlying queue system. In the Job Composer, you can create a new location in your home directory
-for a new job, create or transfer a job script and input files, edit everything, and submit your job all from this screen.
-
-> ## Submit a job from a template in the Job Composer
->
-> Find MPI Hello World job in the templates
->
-> Edit the job script to correct the project number
->
->Submit job and view results
-{: .challenge}
-
-
 ### Interactive jobs
 
-Sometimes, you will need a lot of resource for interactive use.
-Perhaps it's the first time running an analysis 
-or we are attempting to debug something that went wrong with a previous job.
-Fortunately, PBS makes it easy to start an interactive job with `qsub -I`:
+Sometimes, you will need a lot of resource for interactive use.  Perhaps it's
+the first time running an analysis or we are attempting to debug something that
+went wrong with a previous job.  At MARCC we provide a convenient command called
+`interact`: running it alone provides the help options.
 
 ```
-qsub -I -A PZSXXX -l nodes=1:ppn=28 -l walltime=00:01:00 
+interact -p debug -t2:0:0 -N1 -n4 # 4 tasks on 1 node for 2 hours on the debug partition
 ```
 {: .bash}
-
-You can also request interactive jobs on OnDemand using the Interative Apps menu
-
