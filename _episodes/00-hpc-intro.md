@@ -88,4 +88,6 @@ Nelle needs to accomplish tasks such as the following:
 
 Suppose that each file takes about a minute to analyze on her desktop system and consuming all of the resources available, so no email or any other work while the program is running.  With 10,000 files in all this means that it will take approximately 166 hours, or just under 7 days to completely process all the files. 
 
-Shifting this work to an HPC system will not only stand to speed up the processig of these files but the processing will importantly allow Nelle to continue to use her own computer for other work.
+Shifting this work to an HPC system will not only stand to speed up the
+processing of these files but the processing will importantly allow Nelle to
+continue to use her own computer for other work.
