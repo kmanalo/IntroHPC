@@ -113,5 +113,7 @@ cluster!
 
 ![Structure of Cluster](../files/cluster_login.jpg)
 
-This graphic is a general view of the parts of a cluster. For specific details on the clusters at MARCC, check out our 
-Cluster System Details: [https://www.marcc.jhu.edu/cyberinfrastructure/hardware/](https://www.marcc.jhu.edu/cyberinfrastructure/hardware/)
+This graphic is a general view of the parts of a cluster (image courtesy Ohio
+Supercomputer Center). For specific details on the clusters at MARCC, check out
+our Cluster System Details:
+[https://www.marcc.jhu.edu/cyberinfrastructure/hardware/](https://www.marcc.jhu.edu/cyberinfrastructure/hardware/)
