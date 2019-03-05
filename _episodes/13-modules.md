@@ -20,21 +20,18 @@ Before we start using individual software packages, however,
 we should understand the reasoning behind this approach.
 The two biggest factors are software incompatibilities and versioning.
 
-Software incompatibility is a major headache for programmers.
-Sometimes the presence (or absence) 
-of a software package will break others that depend on it.
-Two of the most famous examples are Python 2 and 3 and C compiler versions.
-Python 3 famously provides a `python` command 
-that conflicts with that provided by Python 2. 
-Software compiled against a newer version of the C libraries 
-and then used when they are not present will result in a nasty
+Software incompatibility is a major headache for programmers.  Sometimes the
+presence (or absence) of a software package will break others that depend on
+it.  Two of the most famous examples are Python 2 and 3 and C compiler
+versions.  Python 3 famously provides a `python` command that conflicts with
+that provided by Python 2.  Software compiled against a newer version of the C
+libraries and then used when they are not present will result in a nasty
 `'GLIBCXX_3.4.20' not found` error, for instance. 
 
-Software versioning is another common issue.
-A team might depend on a certain package version for their research project - 
-if the software version was to change (for instance, if a package was updated),
-it might affect their results.
-Having access to multiple software versions allow a set of researchers to take 
+Software versioning is another common issue.  A team might depend on a certain
+package version for their research project - if the software version was to
+change (for instance, if a package was updated), it might affect their results.
+Having access to multiple software versions allow a set of researchers to take
 software version out of the equation if results are weird.
 
 ## Environment modules (Lmod)
@@ -51,43 +48,65 @@ module avail
 ```
 {: .bash}
 ```
---------------------------- /usr/local/share/lmodfiles/MPI/intel/18.0/mvapich2/2.3 -----------------------------
-   darshan/3.1.6    gromacs/2018.2    netcdf/4.6.1    omb/5.4.3         scalapack/2.0.2
-   fftw3/3.3.8      hdf5/1.10.2       nwchem/6.8      parmetis/4.0.3    siesta-par/4.0.2
--------------------------------- /usr/local/share/lmodfiles/Compiler/intel/18.0 ---------------------------------
-   R/3.5.0                   libjpeg-turbo/1.5.3    mvapich2/2.3b                netcdf-serial/4.3.3.1
-   boost/1.67.0              metis/5.1.0            mvapich2/2.3rc1-gpu          netcdf-serial/4.6.1   (D)
-   cxx17/7.3.0        (L)    mkl/2018.0.3           mvapich2/2.3rc1              openmpi/1.10.5
-   hdf5-serial/1.8.17        mvapich2/2.2-debug     mvapich2/2.3rc2-gpu          openmpi/3.1.0-hpcx    (D)
-   hdf5-serial/1.10.2 (D)    mvapich2/2.2-gpu       mvapich2/2.3rc2              siesta/4.0.2
-   intelmpi/2018.0           mvapich2/2.2           mvapich2/2.3        (L,D)
-   intelmpi/2018.3    (D)    mvapich2/2.3b-gpu      ncarg/6.5.0
----------------------------------------- /usr/local/share/lmodfiles/Core ----------------------------------------
-   abaqus/6.14                   gnu/7.3.0                  (D)      qchem/5.1.1-openmp
-   abaqus/2016                   gnuplot/5.2.2                       qchem/5.1.1             (D)
-   abaqus/2017                   hadoop/3.0.0-alpha1                 qhull/2015.2
-   abaqus/2018            (D)    hisat2/2.1.0                        relion2/2.0
-   allinea/6.0.6                 homer/4.8                           remora/1.8.0
-   allinea/7.0            (D)    hpctoolkit/5.3.2                    rna-seqc/1.1.8
-   allinea/7.1                   htslib/1.6                          rstudio/1.0.136_server
-   ansys/17.2                    hyperworks/13                       rstudio/1.1.380_server  (D)
-   ansys/18.1                    hyperworks/2017.1          (D)      salmon/0.8.2
-   ansys/19.1             (D)    ime/1.1                             salome/8.2.0
-   arm-ddt/6.0.6                 intel/16.0.3                        sambamba/0.6.6
-   arm-ddt/7.0                   intel/16.0.8                        samtools/1.3.1          (D)
-   arm-ddt/7.1                   intel/17.0.2                        samtools/1.6
-   arm-ddt/18.2.1         (D)    intel/17.0.5                        samtools/1.9
-   arm-map/6.0.6                 intel/17.0.7                        schrodinger/15
-   arm-map/7.0                   intel/18.0.0                        schrodinger/16
-   arm-map/7.1                   intel/18.0.2                        schrodinger/2018.3      (D)
-   arm-map/18.2.1         (D)    intel/18.0.3               (L,D)    singularity/current
-   arm-pr/6.0.6                  java/1.7.0                          snpeff/4.2
-   arm-pr/7.0                    java/1.8.0_131             (D)      spark/rdma-0.9.4
 
-   D:        Default Module
+MARCC - Blue Crab Cluster - CentOS 7
+Search for software with 'module spider'
 
-Use "module spider" to find all possible modules.
-Use "module keyword key1 key2 ..." to search for all possible modules matching any of the "keys".
+------------------------------------------------------------ Core Modules -------------------------------------------------------------
+   MARCC/summer-2018 (L)    cuda/9.0         gcc/5.5.0  (D)    intel/18.0    (L,D)    openmpi/3.0.0          openmpi/3.1.4    use.own
+   centos7/current   (L)    cuda/9.2  (D)    gcc/6.4.0         intelmpi/2018          openmpi/3.1   (L,D)    openmpi/4.0.0
+   cuda/8.0                 gcc/4.8.5        intel/17.0        mvapich2/2.3           openmpi/3.1.3          pgi/18.10
+
+-------------------------------------------------------------- Base Apps --------------------------------------------------------------
+   R/3.4.2-velox            (c)    eog/3.20.5               julia/0.6.3           (c)      python/3.6
+   abaqus/6.14                     fastqc/0.11.7            julia/0.7.0           (c)      python/3.7                      (D)
+   abaqus/2016              (D)    fastqtl/2.184            julia/1.0.1           (c)      pytorch/0.3.1-gpu-py3
+   aspera/3.7                      ffmpeg/18.09             julia/1.0.2           (c)      pytorch/0.4.1-gpu-py3           (D)
+   atlas/3.10.3                    freesurfer/6.0.0         julia/1.0.3           (D)      qctool/2.0.1
+   augustus/3.3             (c)    fsl/5.0.11               kraken/1.1                     qiime2/2018.8
+   bbmap/38.23                     gatk/4.0.0        (c)    lammps/2016-ICMS               qt5/5.12.1
+   bcl2fastq2/2.20                 gaussian/g09             ls-dyna/10.1.0                 rnaseqc/1.18
+   bedtools/2.27.0                 gaussian16/g16           mathematica/11.3               rsem/1.3.1
+   bioperl/1.7.2                   gaussview/5.0            matlab/R2016a                  ruby/2.5.1
+   biopython/1.72-py2              gdal/2.2.3               matlab/R2017a                  sbank/1.1.1.2
+   biopython/1.72-py3       (D)    gdal/2.3.1               matlab/R2018a         (D)      settarg/7.7.14
+   blast/2.7.1                     gdal/2.4.0        (D)    moby/2.0              (c)      singularity/2.6.0
+   blender/2.79b                   gdc-client/1.3.0         moby/2.0.1            (c,D)    snp-sites/2.4.1                 (c)
+   bowtie/1.1.1                    gedit/3.22.0             openbabel/2.4.1                spm/12
+   bwa/0.7.17                      geos/3.8.0               opensees/3.0.0        (c)      sra-tools/2.9.2                 (c)
+   cdhit/4.6.8.1                   giggle/0.6.3             orca/3.0.3                     star/2.4.2a
+   cdo/1.9.5                (c)    git/2.9.4                orca/4.0.1.2                   subread/1.6.3
+   cellranger/2.2.0                git/2.18.0        (D)    orca/4.1              (D)      tecplot360ex/2015.R2
+   cmake/3.8.2                     globus-cli/1.7.0         ovito/3.0.0           (c)      tensorflow/1.10.1-gpu-py3-keras (g,c)
+   cmake/3.12.1             (D)    gnuplot/4.6.2            parallel/20180822              tensorflow/1.10.1-gpu-py3       (g,c)
+   comsol/5.4                      gsl/2.5                  picard/2.18                    tensorflow/1.10.1-gpu           (g,c,D)
+   connectome_workbench/1.0        gurobi/702               plink/1.90b6.4                 tophat/2.1.1
+   cpanminus/latest                gv/gv                    povray/3.7                     trim_galore/0.5.0
+   cpu_features/latest             hail/0.1                 proj/5.1.0                     trimmomatic/0.38
+   cufflinks/2.2.1                 haskell/7.6.3            proot/5.1.0                    vcf2db/2018.10.26               (c)
+   cutadapt/1.18                   hisat2/2.1.0             python/2.7-anaconda            vcftools/0.1.17
+   deeptools/3.1.2                 hwloc/1.11               python/2.7-anaconda53          vim/8.1
+   dos2unix/7.2.3                  imagemagick/6.7.8        python/2.7                     vmd/1.93
+   emacs/26.1                      java/1.8.0_181           python/3.6-anaconda            xpdf/3.0.4
+
+---------------------------------------------------- Intel Compiler Dependent Apps ----------------------------------------------------
+   R/3.4.0                        hdf5/1.10                 meshalyzer/99a3a10                 pflotran/2018.10
+   R/3.5.1                 (D)    hdf5/1.10.4        (D)    moby2-deps/0.1                     quantumespresso/6.2.1
+   bamtools/2.5.1                 htslib/1.9                namd/2.12-ibverbs-smp-cuda         quantumespresso/6.8   (D)
+   bcftools/1.9                   hypre/2.11.2              namd/2.12-ibverbs                  samtools/0.1.19
+   boost/1.68.0                   jags/4.3.0                namd/2.12-mpi                      samtools/1.9          (D)
+   bowtie2/2.3.4.2                jsoncpp/1.8.4             namd/2.13b-ibverbs-smp-cuda        stringtie/1.3.4d
+   carp/1.8.0                     lammps/20180822    (D)    namd/2.13b2-ibverbs         (D)    swig/3.0.12
+   charmm/42                      lapack/3.8.0              netcdf-fortran/4.4.4               velvet/1.2.10
+   fftw3/3.3.8                    libdrm/2.4.83             netcdf/4.6.1                       xcb-proto/1.13
+   gcc-compatibility/5.5.0 (D)    libxshmfence/1.2.1        petsc/3.6.1
+   gcc-compatibility/6.4.0        meme/5.0.3                petsc/3.9.3                 (D)
+
+  Where:
+   g:  Built for GPU
+   L:  Module is loaded
+   c:  Singularity Container
+   D:  Default Module
 ```
 {: .output}
 
@@ -96,28 +115,26 @@ Use "module keyword key1 key2 ..." to search for all possible modules matching a
 To load a software module, use `module load`.
 In this example we will use Python 3.
 
-Intially, Python 3 is not loaded. 
+Initially, a default Python 3 is loaded but it's the system installed version. Perhaps you may want a newer one.
 
 ```
 which python3
 ```
 {: .bash}
 ```
-/usr/bin/which: no python3 in /usr/bin/which: no python3 in (/opt/mvapich2/intel/18.0/2.3/bin:/usr/local/gnu/7.3.0/bin:/opt/intel/itac/2018.3.022/bin:/opt/intel/advisor_2018/bin
-64:/opt/intel/vtune_amplifier_2018/bin64:/opt/intel/inspector_2018/bin64:/opt/intel/compilers_and_libraries_2018.3.222/linux/bin/intel64:/opt/torque/bin:/usr/lib64/qt-3.3/bin:/opt/osc/bin:/opt/moab/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/opt/ddn/ime/bin:/opt/pup
-petlabs/bin)
+/software/centos7/bin/python3
 ```
 {: .output}
 
-We can load the `python/3.5` command with `module load`.
+We can load the `python/3.6` software with `module load`.
 
 ```
-module load python/3.5
+module load python/3.6
 which python3
 ```
 {: .bash}
 ```
-/usr/local/anaconda3/bin/python3
+/software/apps/python/3.6/bin/python3
 ```
 {: .output}
 
@@ -135,32 +152,28 @@ echo $PATH
 ```
 {: .bash}
 ```
-/usr/local/anaconda3/bin:/opt/mvapich2/intel/18.0/2.3/bin:/usr/local/gnu/7.3.0/bin:/opt/intel/itac/2018.3.022/bin:/opt/intel/advisor_2018/bin64:/opt/intel/vtune_amplifier_2018/bin64:/opt/intel/inspector_2018/bin64:/opt/intel/compilers_and_libraries_2018.3.222/linux/bin/intel64:/opt/torque/bin:/usr/lib64/qt3.3/bin:/opt/osc/bin:/opt/moab/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:/opt/ddn/ime/bin:/opt/puppetlab
-s/bin
+/software/apps/python/3.6/bin:/software/apps/marcc/bin:/software/centos7/bin:/software/apps/slurm/current/sbin:/software/apps/slurm/current/bin:/home-0/kmanalo/perl5/bin:/software/apps/mpi/openmpi/3.1/intel/18.0/bin:/software/apps/compilers/intel/itac/2018.3.022/intel64/bin:/software/apps/compilers/intel/clck/2018.3/bin/intel64:/software/apps/compilers/intel/compilers_and_libraries_2018.3.222/linux/bin/intel64:/software/apps/compilers/intel/compilers_and_libraries_2018.3.222/linux/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/software/apps/compilers/intel/parallel_studio_xe_2018.3.051/bin:/home-0/kmanalo/bin
 ```
 {: .output}
 
 You'll notice a similarity to the output of the `which` command. 
 In this case, there's only one difference:
-the `/usr/local/anaconda3/bin` directory at the beginning.
+the `/software/apps/python/3.6/bin` directory at the beginning.
 When we ran `module load python/3.5.2`, 
 it added this directory to the beginning of our `$PATH`.
 Let's examine what's there:
 
 ```
-ls /usr/local/anaconda3/bin
+ls /software/apps/python/3.6/bin
 ```
 {: .bash}
 ```
-2to3		  idle3    pip3.5    python3	       python3.5m-config  virtualenv
-2to3-3.5	  idle3.5  pydoc3    python3.5	       python3-config	  wheel
-easy_install	  pip	   pydoc3.5  python3.5-config  pyvenv
-easy_install-3.5  pip3	   python    python3.5m        pyvenv-3.5
+2to3      easy_install-3.6  idle3.6  pip3.6  pydoc3.6  python3.6         python3.6m         python3-config  pyvenv-3.6
+2to3-3.6  idle3             pip3     pydoc3  python3   python3.6-config  python3.6m-config  pyvenv
 ```
 {: .output}
 
-Taking this to it's conclusion, `module load` will add software to your `$PATH`.
-It "loads" software.
+`module load` will add software to your `$PATH`.  It "loads" software.
 A special note on this - 
 depending on which version of the `module` program that is installed at your site,
 `module load` will also load required software dependencies.
@@ -172,9 +185,9 @@ module list
 ```
 {: .bash}
 ```
-Currently Loaded Modules:
-  1) cxx17/7.3.0   2) intel/18.0.3   3) mvapich2/2.3   4) modules/au2018   5) python/3.5
 
+Currently Loaded Modules:
+  1) intel/18.0   2) openmpi/3.1   3) MARCC/summer-2018   4) centos7/current   5) python/3.6
   
 ```
 {: .output}
@@ -182,71 +195,59 @@ Currently Loaded Modules:
 
 
 ```
-module unload python/3.5
+module unload python/3.6
 module list
 ```
 {: .bash}
 ```
+
 Currently Loaded Modules:
-  1) cxx17/7.3.0   2) intel/18.0.3   3) mvapich2/2.3   4) modules/au2018
+  1) intel/18.0   2) openmpi/3.1   3) MARCC/summer-2018   4) centos7/current
+
 ```
 {: .output}
 
 So using `module unload` "un-loads" a module along with it's dependencies.
 If we wanted to unload everything at once, we could run `module purge` (unloads everything).
 
+At MARCC, we recommend keeping the MARCC meta-module loaded after a purge, `module purge; module load MARCC`
+This takes us back to the default recommendations.
 
 ## Software versioning
 
 So far, we've learned how to load and unload software packages.
-This is very useful.
-However, we have not yet addressed the issue of software versioning.
-At some point or other, 
-you will run into issues where only one particular version of some software will be suitable.
-Perhaps a key bugfix only happened in a certain version, 
-or version X broke compatibility with a file format you use.
-In either of these example cases, 
-it helps to be very specific about what software is loaded.
-
-Let's examine the output of `module avail` more closely.
+But let's examine the output of `module avail` more closely.
 
 ```
 module avail
 ```
 {: .bash}
 ```
----------------------------------------- /usr/local/share/lmodfiles/Core ----------------------------------------
-   abaqus/6.14                   gnu/7.3.0                  (D)      qchem/5.1.1-openmp
-   abaqus/2016                   gnuplot/5.2.2                       qchem/5.1.1             (D)
-   abaqus/2017                   hadoop/3.0.0-alpha1                 qhull/2015.2
-   abaqus/2018            (D)    hisat2/2.1.0                        relion2/2.0
-   allinea/6.0.6                 homer/4.8                           remora/1.8.0
-   allinea/7.0            (D)    hpctoolkit/5.3.2                    rna-seqc/1.1.8
-   allinea/7.1                   htslib/1.6                          rstudio/1.0.136_server
-   ansys/17.2                    hyperworks/13                       rstudio/1.1.380_server  (D)
-   ansys/18.1                    hyperworks/2017.1          (D)      salmon/0.8.2
-   ansys/19.1             (D)    ime/1.1                             salome/8.2.0
-   arm-ddt/6.0.6                 intel/16.0.3                        sambamba/0.6.6
-   arm-ddt/7.0                   intel/16.0.8                        samtools/1.3.1          (D)
-   arm-ddt/7.1                   intel/17.0.2                        samtools/1.6
-   arm-ddt/18.2.1         (D)    intel/17.0.5                        samtools/1.9
-   arm-map/6.0.6                 intel/17.0.7                        schrodinger/15
-   arm-map/7.0                   intel/18.0.0                        schrodinger/16
-   arm-map/7.1                   intel/18.0.2                        schrodinger/2018.3      (D)
-   arm-map/18.2.1         (D)    intel/18.0.3               (L,D)    singularity/current
-   arm-pr/6.0.6                  java/1.7.0                          snpeff/4.2
-   arm-pr/7.0                    java/1.8.0_131             (D)      spark/rdma-0.9.4
+
+MARCC - Blue Crab Cluster - CentOS 7
+Search for software with 'module spider'
+
+------------------------------------------------------------ Core Modules -------------------------------------------------------------
+   MARCC/summer-2018 (L)    cuda/9.0         gcc/5.5.0  (D)    intel/18.0    (L,D)    openmpi/3.0.0          openmpi/3.1.4    use.own
+   centos7/current   (L)    cuda/9.2  (D)    gcc/6.4.0         intelmpi/2018          openmpi/3.1   (L,D)    openmpi/4.0.0
+   cuda/8.0                 gcc/4.8.5        intel/17.0        mvapich2/2.3           openmpi/3.1.3          pgi/18.10
+
+-------------------------------------------------------------- Base Apps --------------------------------------------------------------
+   R/3.4.2-velox            (c)    eog/3.20.5               julia/0.6.3           (c)      python/3.6
+   abaqus/6.14                     fastqc/0.11.7            julia/0.7.0           (c)      python/3.7                      (D)
+   abaqus/2016              (D)    fastqtl/2.184            julia/1.0.1           (c)      pytorch/0.3.1-gpu-py3
+   aspera/3.7                      ffmpeg/18.09             julia/1.0.2           (c)      pytorch/0.4.1-gpu-py3           (D)
+   atlas/3.10.3                    freesurfer/6.0.0         julia/1.0.3           (D)      qctool/2.0.1
+   augustus/3.3             (c)    fsl/5.0.11               kraken/1.1                     qiime2/2018.8
+   bbmap/38.23                     gatk/4.0.0        (c)    lammps/2016-ICMS               qt5/5.12.1
 ```
 {: .output}
 
-Software with multiple versions will be marked with a (D). The best way to be sure you understand how certain software is
-used on our clusters is to look at the software page on our website. [https://www.osc.edu/resources/available_software](https://www.osc.edu/resources/available_software)
+Software with multiple versions will be marked with a (D).  Please engage with us at marcc-help@marcc.jhu.edu to help us shape software needs.
 
 > ## Using software modules in scripts
 >
 > Create a job that is able to run `python3 --version`.
-> Remember, no software is loaded by default!
-> Running a job is just like logging on to the system 
 > (you should not assume a module loaded on the login node is loaded on a compute node).
 {: .challenge}
 
@@ -268,8 +269,8 @@ used on our clusters is to look at the software page on our website. [https://ww
 
 ## Installing software of our own
 
->The following tutorial is from our HOWTO guide on our website. We have many more useful guides there, take 
->a look at [https://www.osc.edu/resources/getting_started/howto](https://www.osc.edu/resources/getting_started/howto)
+>The following tutorial is from our HOWTO guide on our website. While we are MARCC, OSC has a great set of tutorial materials,
+>please have a look at [https://www.osc.edu/resources/getting_started/howto](https://www.osc.edu/resources/getting_started/howto)
 >
 {: .callout}
 
@@ -277,10 +278,9 @@ Most HPC clusters have a pretty large set of preinstalled software.
 Nonetheless, it's unlikely that all of the software we'll need will be available.
 Sooner or later, we'll need to install some software of our own. 
 
-Though software installation differs from package to package,
-the general process is the same:
-download the software, read the installation instructions (important!),
-install dependencies, compile, then start using our software.
+Though software installation differs from package to package, the general
+process is the same: download the software, read the installation instructions
+(important!), install dependencies, compile, then start using our software.
 
 ### Getting Started
 Before installing your software, you should first prepare a place for it to live. We recommend the following directory structure, which you should create in the top-level of your home directory:
@@ -293,7 +293,7 @@ Before installing your software, you should first prepare a place for it to live
 ```
 {: .bash}
 
-This structure is how OSC organizes the software we provide. Each directory serves a specific purpose:
+This structure is one way to organizes software. Each directory serves a specific purpose:
 
 | directory | description |
 | --- | --- |

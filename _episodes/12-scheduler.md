@@ -60,9 +60,9 @@ heavy script on the head node, as every user relies on this head node.
 
 To test a small SLURM script, run it as:
 ```
-bash test.pbs
+bash test.job
 # alternatively you can 
-# chmod +x test.pbs
+# chmod +x test.job
 # ./test.job
 This script is running on:
 bc-login01
@@ -80,10 +80,10 @@ sbatch test.job
 Submitted batch job 32962120
 ```
 
-The number that first appears is your Job ID. When the job is completed, you will get two files: an Output and an Error file (even if there is no errors). They will be named {JobName}.o{JobID} and {JobName}.e{JobID} respectively.
+The number that first appears is your Job ID. When the job is completed, you will get a file that combines both "Output" (stdout) and "Error" (stderr). There are options in Slurm to split `stdout` and `stderr` file streams, they will be named {JobName}.o{JobID} and {JobName}.e{JobID} respectively.
 
-And that's all we need to do to submit a job. 
-To check on our job's status, we use the command `squeue`.
+And that's all we need to do to submit a job.  To check on our job's status, we
+use the command `squeue`, and an option to filter out your own user.
 
 ```
 ~> squeue -u $USER # this usually is set to your username
@@ -140,7 +140,8 @@ In our example, we have set the following parameters:
 | --ntasks | number of tasks | 4 | MPI tasks or CPU cores |
 
 ### Resource list
-Resource list will contain a number of settings that informs the PBS scheduler what resources to allocate for your job and for how long (walltime).
+Resource list will contain a number of settings that informs the scheduler what
+resources to allocate for your job and for how long (walltime).
 
 #### Walltime
 Walltime is represented by `time=00:01:01` in the format HH:MM:SS. This will be how long the job will run before timing out.  If your job exceeds this time the scheduler will terminate the job. It is recommended to find a usual runtime for the job and add some more (say 20%) to it. For example, if a job took approximately 10 hours, the walltime limit could be set to 12 hours, e.g. "-l walltime=12:00:00". By setting the walltime the scheduler can perform job scheduling more efficiently and also reduces occasions where errors can leave the job stalled but still taking up resource for the default much longer walltime limit (for queue walltime defaults run "qstat -q" command)
@@ -224,7 +225,7 @@ Slurm sets multiple environment variables at submission time. The following Slur
 |---                     |---|
 | SLURM_ARRAY_TASK_ID    |  Array ID numbers for jobs submitted with the --array flag. For example a job submitted with #SBATCH --array 1-8 will run eight identical copies of the shell script. The value of the SLURM_ARRAY_TASK_ID will be an integer between 1 and 8.|
 | SLURM_JOB_ID           |  Full jobid assigned to this job. Often used to uniquely name output files for this job, for example: mpiexec -n 16 ./a.out >output.${SLURM_JOB_ID}|
-| SLURM_JOB_NAME         |  Name of the job. This can be set using the -N option in the PBS script (or from the command line). The default job name is the name of the script.|
+| SLURM_JOB_NAME         |  Name of the job. This can be set using the -J option in the Slurm script (or from the command line). The default job name is the name of the script.|
 | SLURM_NODELIST         |  Contains a list of the nodes assigned to the job. If multiple CPUs on a node have been assigned, the node will be listed in the file more than once. By default, mpirun assigns jobs to nodes in the order they are listed in this file |
 | SLURM_SUBMIT_HOST      |  The name of the host upon which the qsub command is running.|
 | SLURM_JOB_PARTITION    |  Partition job was submitted to.|
