@@ -269,7 +269,7 @@ Software with multiple versions will be marked with a (D).  Please engage with u
 
 ## Installing software of our own
 
->The following tutorial is from our HOWTO guide on our website. While we are MARCC, OSC has a great set of tutorial materials,
+>While we are serving MARCC, Ohio Supercomputer Center (OSC) has a great set of tutorial materials,
 >please have a look at [https://www.osc.edu/resources/getting_started/howto](https://www.osc.edu/resources/getting_started/howto)
 >
 {: .callout}
@@ -347,5 +347,3 @@ Then, we can build Git using the following commands:
 {: .bash}
 
 We've successfully installed our first piece of software!
-
-See the HOWTO for details on creating your own modules for locally installed software.

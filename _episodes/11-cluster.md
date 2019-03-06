@@ -75,7 +75,9 @@ running quick tests.  It should never be used for doing actual work.
 The real work on a cluster gets done by the compute nodes.
 Compute nodes come in many shapes and sizes, but generally are dedicated to doing all of the heavy lifting that needs doing. 
 All interaction with the compute nodes is handled by a specialized piece of software called a scheduler. We use the SLURM scheduler.
-We can view all of the worker nodes with the `pbsnodes -a` command. But this would be overwhelming since we have over 900 compute nodes, so we'll abbreviate it instead.
+We can view all of the worker nodes with the `scontrol show nodes` command. But
+this would be overwhelming since we have over 900 compute nodes, so we'll
+abbreviate it instead.
 
 ```
 scontrol show nodes | tail -n 18
